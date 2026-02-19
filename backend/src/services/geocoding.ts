@@ -1,10 +1,10 @@
 export const geocodeCity = async (cityName: string) => {
-    const userAgent = "benine_islamic_time/1.0 (i.2510152@unida.ac.id)";
+    const UserAgent = process.env.user_agent!;
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(cityName)}&format=json&limit=1`;
 
     const response = await fetch(url, {
         headers: {
-            'User-Agent': userAgent
+            'User-Agent': UserAgent
         }
     });
 
