@@ -12,6 +12,7 @@ import tailwindIcon from './assets/tailwind.svg'
 import elysiaIcon from './assets/elysia.svg'
 import islamicapiIcon from './assets/islamic_api.png'
 import osmapIcon from './assets/Openstreetmap.png'
+import b9Icon from './assets/icon.ico'
 import { useState, useEffect } from 'react';
 
 interface PrayerTimes {
@@ -151,6 +152,8 @@ function App() {
   <div className="bg-[#09637E] h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col"> {/*background color / main container*/}
    {/*header section*/}
     <header className="bg-[#088395] rounded-b-[71px] relative z-0 h-60 sm:h-64 md:h-56 lg:h-64">
+      <title>B9 / Prayer Time</title>
+      <link rel="icon" href={b9Icon} />
       <img src={patternImage} className='w-full h-full object-cover rounded-b-[71px]' />
       <div className="absolute inset-0 max-w-[95%] mx-auto w-full">    
         <div className="absolute top-1/2 md:top-1/3 left-[16px] md:left-[0px] transform -translate-y-1/2">
@@ -175,7 +178,7 @@ function App() {
             {currentTime.getMinutes().toString().padStart(2, '0')}
         </h2>
         <p className="text-lg opacity-80 mt-2">
-          <p>{hijriDate}</p>
+          <span className="block">{hijriDate}</span>
           {currentTime.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' })}
         </p>
       </div>
@@ -325,7 +328,7 @@ function App() {
         <div className="flex flex-row items-start justify-start md:justify-end gap-8 md:ml-auto">
           <div className='text-left'> 
             <img src={benine_logo} className='w-35'/>
-            <p className='mt-2 opacity-70'>Website Prayer_Time by Raddin Pratama/B9 Media, <br/> All right not reseve yet</p>
+            <p className='mt-2 opacity-70'>Website Prayer_Time by <a href="https://github.com/Capsradd" target="_blank" className="text-blue-300 hover:underline">Raddin Pratama </a>/ B9 Media, <br/> All right not reseve yet</p>
           </div>
         </div>
     </div>
