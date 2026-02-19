@@ -98,7 +98,7 @@ function App() {
         <div className='w-full text-left mt-4 pt-5 pb-15 flex justify-center'>
           <div className='pl-8 md:pl-16 pr-4 md:pr-8'>
             <h2 className='text-4xl font-bold mt-4'>"مَنْ صَامَ رَمَضَانَ إِيمَانًا وَاحْتِسَابًا غُفِرَ لَهُ مَا تَقَدَّمَ مِنْ ذَنْبِهِ."</h2>
-            <p className='text-xl mt-2'>"Whoever fasts Ramadan out of faith and hoping for a reward from Allah, his past sins will be forgiven." <br/> (HR. Bukhari and Muslim)</p>
+            <p className='text-xl mt-2'>""Barangsiapa yang berpuasa Ramadan karena iman dan mengharap pahala dari Allah, <br/>  maka diampuni dosa-dosanya yang telah lalu." (HR. Bukhari dan Muslim)"</p>
           </div>
          </div>
         </div>
