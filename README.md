@@ -1,7 +1,7 @@
 ![enter image description here](readme_media/logo_prayer.png)
 
 A website thats tell islamic prayer time anywhere on earth. powered by Islamic API for prayer time data, and OpenStreetMap API for converting city name into coordinate (needed for the islamic api).
-Not hosted yet because I'm broke.
+
 
 ![enter image description here](readme_media/sc1.png)
 
