@@ -1,18 +1,3 @@
-import patternImage from './assets/pattern.png'
-import benine_logo from './assets/benine_logo.png'
-import menu_button from './assets/menu_button.png'
-import imsak from './assets/imsak.svg'
-import fajr from './assets/fajr.svg'
-import dzuhur from './assets/dzuhur.svg'
-import ashar from './assets/ashar.svg'
-import maghrib from './assets/maghrib.svg'
-import isya from './assets/isha.svg'
-import reactIcon from './assets/react.svg'
-import tailwindIcon from './assets/tailwind.svg'
-import elysiaIcon from './assets/elysia.svg'
-import islamicapiIcon from './assets/islamic_api.png'
-import osmapIcon from './assets/Openstreetmap.png'
-import b9Icon from './assets/icon.ico'
 import { useState, useEffect } from 'react';
 
 interface PrayerTimes {
@@ -74,6 +59,15 @@ function App() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const prayer_icons = {
+    imsak: '/icon_pray/imsak.svg',
+    fajr: '/icon_pray/fajr.svg',
+    dhuhr: '/icon_pray/dzuhur.svg',
+    asr: '/icon_pray/ashar.svg',
+    maghrib: '/icon_pray/maghrib.svg',
+    isha: '/icon_pray/isha.svg',
   };
 
   useEffect(() => {
@@ -153,17 +147,17 @@ function App() {
    {/*header section*/}
     <header className="bg-[#088395] rounded-b-[71px] relative z-0 h-60 sm:h-64 md:h-56 lg:h-64">
       <title>B9 / Prayer Time</title>
-      <link rel="icon" href={b9Icon} />
-      <img src={patternImage} className='w-full h-full object-cover rounded-b-[71px]' />
+      <link rel="icon" href="/icon.ico" />
+      <img src="/pattern.png" className='w-full h-full object-cover rounded-b-[71px]' />
       <div className="absolute inset-0 max-w-[95%] mx-auto w-full">    
         <div className="absolute top-1/2 md:top-1/3 left-[16px] md:left-[0px] transform -translate-y-1/2">
           {/*content on the left */}
-          <img src={benine_logo} className="w-24 md:w-32" />
+          <img src="/benine_logo.png" className="w-24 md:w-32" />
           <p className="text-white font-bold text-xl md:text-3xl">Prayer Time 1.0</p>
         </div>
         <div className="absolute top-1/2 md:top-1/3 right-[16px] md:right-[0px] transform -translate-y-1/2">
           {/*content on the right */}
-          <img src={menu_button} className="w-14 md:w-auto" />
+          <img src="/menu_button.png" className="w-14 md:w-auto" />
         </div>
       </div>
     </header>
@@ -196,12 +190,12 @@ function App() {
         ) : (
           <div className='flex flex-wrap justify-center items-center text-center gap-4 md:gap-20'>
             {[
-              { name: 'imsak', time: prayerTimes.imsak, icon: imsak },
-              { name: 'fajr', time: prayerTimes.fajr, icon: fajr },
-              { name: 'dhuhr', time: prayerTimes.dhuhr, icon: dzuhur },
-              { name: 'asr', time: prayerTimes.asr, icon: ashar },
-              { name: 'maghrib', time: prayerTimes.maghrib, icon: maghrib },
-              { name: 'isha', time: prayerTimes.isha, icon: isya },
+              { name: 'imsak', time: prayerTimes.imsak, icon: prayer_icons.imsak },
+              { name: 'fajr', time: prayerTimes.fajr, icon: prayer_icons.fajr },
+              { name: 'dhuhr', time: prayerTimes.dhuhr, icon: prayer_icons.dhuhr },
+              { name: 'asr', time: prayerTimes.asr, icon: prayer_icons.asr },
+              { name: 'maghrib', time: prayerTimes.maghrib, icon: prayer_icons.maghrib },
+              { name: 'isha', time: prayerTimes.isha, icon: prayer_icons.isha },
             ].map((prayer, index) => (
               <div key={index} className="flex flex-col items-center gap-1">
                   <img src={prayer.icon} className="w-14 h-14 mb-1" />     
@@ -311,23 +305,23 @@ function App() {
     </main>
   <div className='flex-grow min-h-4'></div>
   <footer className='relative overflow-hidden rounded-t-[40px] min-h-fit'>
-    <img src={patternImage} className='absolute inset-0 w-full h-full object-cover opacity-30' />
+    <img src="/pattern.png" className='absolute inset-0 w-full h-full object-cover opacity-30' />
     <div className='absolute inset-0 bg-[#064a5e]/80'></div>
     <div className='relative text-white flex flex-wrap justify-between items-start w-full px-4 md:px-8 py-8 text-[15px] gap-6'>
         <div className="text-left">
             <p className='font-semibold mb-1'>Made while fasting using</p>
             <div className='flex space-x-4 mt-3 mb-3'>
-                <a href="https://react.dev/" target="_blank"><img src={reactIcon} className='w-10 hover:scale-110 transition-transform duration-200' /></a>
-                <a href="https://tailwindcss.com" target="_blank"><img src={tailwindIcon} className='w-10 translate-y-1 hover:scale-110 transition-transform duration-200' /></a>
-                <a href="https://elysiajs.com/" target="_blank"><img src={elysiaIcon} className='w-10 hover:scale-110 transition-transform duration-200' /></a>
-                <a href="https://islamicapi.com/" target="_blank"><img src={islamicapiIcon} className='w-45 hover:scale-110 transition-transform duration-200 brightness-0 invert' /></a>
-                <a href="https://openstreetmap.org/" target="_blank"><img src={osmapIcon} className='w-10 hover:scale-110 transition-transform duration-200' /></a>
+                <a href="https://react.dev/" target="_blank"><img src="/logo_footer/react.svg" className='w-10 hover:scale-110 transition-transform duration-200' /></a>
+                <a href="https://tailwindcss.com" target="_blank"><img src="/logo_footer/tailwind.svg" className='w-10 translate-y-1 hover:scale-110 transition-transform duration-200' /></a>
+                <a href="https://elysiajs.com/" target="_blank"><img src="/logo_footer/elysia.svg" className='w-10 hover:scale-110 transition-transform duration-200' /></a>
+                <a href="https://islamicapi.com/" target="_blank"><img src="/logo_footer/islamic_api.png" className='w-45 hover:scale-110 transition-transform duration-200 brightness-0 invert' /></a>
+                <a href="https://openstreetmap.org/" target="_blank"><img src="/logo_footer/Openstreetmap.png" className='w-10 hover:scale-110 transition-transform duration-200' /></a>
             </div>
             <p className='opacity-70'>react, tailwind css, elysia, islamic api, openstreetmap api</p>
         </div>
         <div className="flex flex-row items-start justify-start md:justify-end gap-8 md:ml-auto">
           <div className='text-left'> 
-            <img src={benine_logo} className='w-35'/>
+            <img src="benine_logo.png" className='w-35'/>
             <p className='mt-2 opacity-70'>Website Prayer_Time by <a href="https://github.com/Capsradd" target="_blank" className="text-blue-300 hover:underline">Raddin Pratama </a>/ B9 Media, <br/> All right not reseve yet</p>
           </div>
         </div>
