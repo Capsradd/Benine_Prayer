@@ -50,6 +50,27 @@ const DAILY_TRACKER_ITEMS = ['Tarawih', 'Tadarus', 'Sholat', 'Sadaqah'] as const
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
+// LocalStorage helpers
+const STORAGE_KEY = 'benine_prayer_last_city';
+
+const saveLastCity = (cityData: { name: string; lat: number; lon: number; utcOffset: string }) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cityData));
+  } catch (error) {
+    console.log('Failed to save city to localStorage:', error);
+  }
+};
+
+const getLastCity = () => {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.log('Failed to load city from localStorage:', error);
+    return null;
+  }
+};
+
 function App() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
@@ -73,43 +94,6 @@ function App() {
   
   // Refs for cleanup
   const abortControllerRef = useRef<AbortController | null>(null);
-
-  // Set default Hijri date on mount
-  useEffect(() => {
-    // Function to get accurate Hijri date from our backend (just for the date, not prayer times)
-    const getHijriDate = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/api/prayer-data?city=Jakarta`);
-        
-        if (response.ok) {
-          const result: ApiResponse = await response.json();
-          const hijri = result.prayerTimes?.data?.date?.hijri;
-          if (hijri) {
-            setHijriDate(`${hijri.day} ${hijri.month.en} ${hijri.year} ${hijri.designation.abbreviated}`);
-            return;
-          }
-        }
-      } catch (error) {
-        console.log('Failed to fetch Hijri date, using fallback');
-      }
-
-      // Fallback: Calculate approximate Hijri date
-      const today = new Date();
-      const hijriMonths = ['Muharram', 'Safar', 'Rabi\' al-awwal', 'Rabi\' al-thani', 'Jumada al-awwal', 'Jumada al-thani', 
-                          'Rajab', 'Sha\'ban', 'Ramadan', 'Shawwal', 'Dhu al-Qi\'dah', 'Dhu al-Hijjah'];
-      
-      // Approximate Hijri date calculation (simplified)
-      const gregorianYear = today.getFullYear();
-      const hijriYear = Math.floor((gregorianYear - 622) * 1.031) + 1;
-      const dayOfYear = Math.floor((today.getTime() - new Date(gregorianYear, 0, 1).getTime()) / (1000 * 60 * 60 * 24));
-      const hijriMonthIndex = Math.floor((dayOfYear / 30.4) % 12);
-      const hijriDay = Math.floor(dayOfYear % 30.4) + 1;
-      
-      setHijriDate(`${hijriDay} ${hijriMonths[hijriMonthIndex]} ${hijriYear} AH`);
-    };
-
-    getHijriDate();
-  }, []);
 
   const toggleItem = useCallback((item: string) => {
     setCheckedItems(prev => 
@@ -151,6 +135,41 @@ function App() {
     }
   }, []);
 
+  // Load last city or default to Jakarta on mount
+  useEffect(() => {
+    const loadInitialCity = async () => {
+      const lastCity = getLastCity();
+      let cityToLoad = 'Jakarta';
+      
+      if (lastCity) {
+        console.log('Loading last saved city:', lastCity.name);
+        // Restore saved city data
+        setCityName(lastCity.name);
+        setLatitude(lastCity.lat);
+        setLongitude(lastCity.lon);
+        setUtcOffset(lastCity.utcOffset);
+        cityToLoad = lastCity.name;
+      } else {
+        console.log('First time visit, using Jakarta');
+      }
+      
+      // Get prayer times and Hijri date for the selected city
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/prayer-data?city=${encodeURIComponent(cityToLoad)}`);
+        
+        if (response.ok) {
+          const result: ApiResponse = await response.json();
+          applyPrayerData(result);
+        }
+      } catch (error) {
+        console.log('Failed to fetch initial city data:', error);
+        setHijriDate('Islamic Calendar');
+      }
+    };
+
+    loadInitialCity();
+  }, [applyPrayerData]);
+
   const searchCity = useCallback(async () => {
     if (!cityInput.trim()) {
       setIsEditingCity(false);
@@ -179,6 +198,14 @@ function App() {
       
       const result: ApiResponse = await response.json();
       applyPrayerData(result);
+      
+      // Save successful search to localStorage
+      saveLastCity({
+        name: result.city,
+        lat: result.lat,
+        lon: result.lon,
+        utcOffset: result.currentTime?.utcOffset || result.prayerTimes?.data?.timezone?.utc_offset || '+07:00'
+      });
 
       setIsEditingCity(false);
       setCityInput(''); // Clear input after successful search
